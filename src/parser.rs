@@ -358,7 +358,9 @@ fn parse_captal_identifier(input: &str) -> PResult<String> {
     let (input, head) = satisfy(|c| 'A' <= c && c <= 'Z' || c == '_')(input)?;
 
     // ([A..Z0..9]|_)*
-    let (input, tail) = many0(satisfy(|c| 'A' <= c && c <= 'Z' || c == '_'))(input)?;
+    let (input, tail) = many0(satisfy(|c| {
+        'A' <= c && c <= 'Z' || '0' <= c && c <= '9' || c == '_'
+    }))(input)?;
 
     let tail: String = tail.iter().collect();
     Ok((input, format!("{head}{tail}")))
